@@ -20,3 +20,5 @@ export function DesktopContainer({ children, className = '' }: DesktopContainerP
     </motion.div>
   )
 }
+
+export default DesktopContainer
