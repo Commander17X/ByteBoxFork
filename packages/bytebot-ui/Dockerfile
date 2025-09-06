@@ -7,8 +7,8 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Copy package files
-COPY package*.json ./
-COPY ../shared/package*.json ./shared/
+COPY bytebot-ui/package*.json ./
+COPY shared/package*.json ./shared/
 
 # Install dependencies
 RUN npm install --omit=dev
@@ -17,7 +17,8 @@ RUN npm install --omit=dev
 FROM base AS builder
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
-COPY . .
+COPY bytebot-ui/ .
+COPY shared/ ./shared/
 
 # Build shared package first
 WORKDIR /app/shared
