@@ -18,8 +18,8 @@ import {
   MessageCircle,
   LogOut
 } from 'lucide-react'
-import ChatManagement from '../components/admin/chat-management'
-import EmailComposer from '../components/admin/email-composer'
+import ChatManagement from '@/components/admin/chat-management'
+import EmailComposer from '@/components/admin/email-composer'
 
 interface WaitlistUser {
   id: string
