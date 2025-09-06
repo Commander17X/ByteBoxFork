@@ -2,55 +2,871 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom styles for ByteBot */
 @layer base {
-  html {
-    font-family: 'Inter', system-ui, sans-serif;
+  :root {
+    --font-inter: 'Inter', sans-serif;
+    --font-space-grotesk: 'Space Grotesk', sans-serif;
+    --font-jetbrains-mono: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer base {
+  :root {
+    /* Default theme (minimal-gray) */
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 84% 4.9%;
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --radius: 0.5rem;
+
+    /* Theme colors */
+    --theme-primary: rgba(255, 255, 255, 0.95);
+    --theme-secondary: rgba(255, 255, 255, 0.85);
+    --theme-muted: rgba(255, 255, 255, 0.7);
+    --theme-accent: rgba(255, 255, 255, 0.25);
+    --theme-border: rgba(255, 255, 255, 0.3);
+    --theme-hover: rgba(255, 255, 255, 0.35);
+    --theme-glow: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Theme definitions */
+
+[data-theme="minimal-gray"] {
+  --theme-primary: rgba(240, 240, 240, 0.98);
+  --theme-secondary: rgba(220, 220, 220, 0.92);
+  --theme-muted: rgba(180, 180, 180, 0.8);
+  --theme-accent: rgba(200, 200, 200, 0.4);
+  --theme-border: rgba(160, 160, 160, 0.5);
+  --theme-hover: rgba(210, 210, 210, 0.6);
+  --theme-glow: rgba(140, 140, 140, 0.3);
+  --theme-card-bg: rgba(190, 190, 190, 0.25);
+  --theme-gradient: linear-gradient(135deg, rgba(200, 200, 200, 0.3) 0%, rgba(180, 180, 180, 0.15) 100%);
+}
+
+[data-theme="soft-cream"] {
+  --theme-primary: rgba(255, 250, 240, 0.98);
+  --theme-secondary: rgba(255, 248, 235, 0.92);
+  --theme-muted: rgba(244, 238, 198, 0.8);
+  --theme-accent: rgba(240, 226, 150, 0.4);
+  --theme-border: rgba(230, 207, 111, 0.5);
+  --theme-hover: rgba(238, 205, 96, 0.6);
+  --theme-glow: rgba(214, 190, 77, 0.3);
+  --theme-card-bg: rgba(244, 238, 198, 0.25);
+  --theme-gradient: linear-gradient(135deg, rgba(240, 226, 150, 0.3) 0%, rgba(230, 207, 111, 0.15) 100%);
+}
+
+[data-theme="cool-blue"] {
+  --theme-primary: rgba(245, 252, 255, 0.98);
+  --theme-secondary: rgba(230, 248, 254, 0.92);
+  --theme-muted: rgba(196, 240, 253, 0.8);
+  --theme-accent: rgba(135, 221, 252, 0.4);
+  --theme-border: rgba(66, 199, 248, 0.5);
+  --theme-hover: rgba(24, 175, 233, 0.6);
+  --theme-glow: rgba(20, 143, 195, 0.3);
+  --theme-card-bg: rgba(196, 240, 253, 0.25);
+  --theme-gradient: linear-gradient(135deg, rgba(135, 221, 252, 0.3) 0%, rgba(66, 199, 248, 0.15) 100%);
+}
+
+[data-theme="sage-green"] {
+  --theme-primary: rgba(245, 255, 248, 0.98);
+  --theme-secondary: rgba(230, 255, 235, 0.92);
+  --theme-muted: rgba(197, 255, 218, 0.8);
+  --theme-accent: rgba(144, 249, 182, 0.4);
+  --theme-border: rgba(84, 232, 138, 0.5);
+  --theme-hover: rgba(44, 207, 104, 0.6);
+  --theme-glow: rgba(32, 173, 84, 0.3);
+  --theme-card-bg: rgba(197, 255, 218, 0.25);
+  --theme-gradient: linear-gradient(135deg, rgba(144, 249, 182, 0.3) 0%, rgba(84, 232, 138, 0.15) 100%);
+}
+
+[data-theme="lavender-purple"] {
+  --theme-primary: rgba(252, 250, 255, 0.98);
+  --theme-secondary: rgba(248, 240, 255, 0.92);
+  --theme-muted: rgba(238, 223, 255, 0.8);
+  --theme-accent: rgba(226, 224, 254, 0.4);
+  --theme-border: rgba(206, 191, 253, 0.5);
+  --theme-hover: rgba(157, 61, 234, 0.6);
+  --theme-glow: rgba(134, 68, 237, 0.3);
+  --theme-card-bg: rgba(238, 223, 255, 0.25);
+  --theme-gradient: linear-gradient(135deg, rgba(226, 224, 254, 0.3) 0%, rgba(206, 191, 253, 0.15) 100%);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    font-family: var(--font-inter);
   }
   
-  body {
-    @apply bg-gradient-to-br from-gray-900 via-blue-900 to-purple-900 min-h-screen;
+  .wallpaper-bg {
+    background-image: url('/img/default_wallpaper.6a069859.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  
+  /* Typography inspired by warmwind.space */
+  .font-display {
+    font-family: var(--font-space-grotesk);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  
+  .font-body {
+    font-family: var(--font-inter);
+    font-weight: 400;
+    line-height: 1.6;
+  }
+  
+  .font-mono {
+    font-family: var(--font-jetbrains-mono);
+    font-weight: 400;
   }
 }
 
 @layer components {
+  /* Clean white design inspired by warmwind.space */
+  .glass-panel {
+    @apply backdrop-blur-xl border border-white border-opacity-20 rounded-xl shadow-lg;
+    background-color: rgba(255, 255, 255, 0.18);
+  }
+
   .heavenly-glass {
-    @apply bg-white/10 backdrop-blur-md border border-white/20;
+    @apply backdrop-blur-2xl border border-white border-opacity-25 shadow-2xl;
+    background-color: rgba(255, 255, 255, 0.22);
+  }
+
+  .ethereal-card {
+    @apply backdrop-blur-xl rounded-xl shadow-xl;
+    border: 1px solid var(--theme-border);
+    background: var(--theme-gradient);
+    box-shadow: 
+      0 8px 32px rgba(0, 0, 0, 0.1),
+      0 0 0 1px var(--theme-border),
+      inset 0 1px 0 var(--theme-glow);
   }
   
-  .warmwind-input {
-    @apply bg-white/5 border border-white/20 text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50;
+  .divine-glow {
+    box-shadow:
+      0 0 30px var(--theme-glow),
+      0 0 60px var(--theme-glow),
+      inset 0 1px 0 var(--theme-primary);
+  }
+
+  .celestial-border {
+    border: 1px solid var(--theme-border);
+    box-shadow: 0 0 30px var(--theme-glow);
   }
   
+  .angelic-text {
+    @apply font-light tracking-wide;
+    color: var(--theme-primary);
+  }
+  
+  .warmwind-text {
+    @apply font-display font-medium tracking-tight;
+    color: var(--theme-primary);
+  }
+
   .warmwind-body {
-    @apply text-white/90;
+    @apply font-body;
+    color: var(--theme-secondary);
   }
   
-  .wallpaper-bg {
-    background-image: 
-      radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-      radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+  .warmwind-mono {
+    @apply font-mono text-sm;
+    color: var(--theme-secondary);
   }
   
-  .desktop-area {
-    @apply relative overflow-hidden;
+  .heavenly-gradient {
+    background: var(--theme-gradient);
   }
   
-  .grid-overlay {
-    @apply absolute inset-0 pointer-events-none;
-    background-image: 
-      linear-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
-    background-size: 20px 20px;
+  .card-hover {
+    @apply transition-all duration-300 hover:scale-105;
+  }
+  
+  .card-hover:hover {
+    box-shadow: 0 25px 50px -12px var(--theme-glow);
+    background-color: var(--theme-hover);
+  }
+  
+  .floating-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .status-indicator {
+    @apply w-3 h-3 rounded-full;
+  }
+  
+  .status-idle {
+    background-color: var(--theme-muted);
+  }
+
+  .status-active {
+    @apply animate-pulse;
+    background-color: var(--theme-primary);
+  }
+
+  .status-failed {
+    background-color: rgba(252, 165, 165, 0.95);
+  }
+
+  .status-autonomous {
+    @apply animate-pulse;
+    background-color: var(--theme-secondary);
+  }
+  
+  .divine-shimmer {
+    background: linear-gradient(90deg, 
+      transparent, 
+      var(--theme-glow), 
+      transparent);
+    background-size: 200px 100%;
+    animation: shimmer 3s infinite;
+  }
+  
+  /* Clean button styles */
+  .warmwind-button {
+    @apply px-6 py-3 rounded-lg transition-all duration-300 font-display;
+    border: 1px solid var(--theme-border);
+    background-color: var(--theme-accent);
+    color: var(--theme-primary);
+  }
+
+  .warmwind-button:hover {
+    background-color: var(--theme-hover);
+    border-color: var(--theme-hover);
+    color: var(--theme-primary);
+    box-shadow: 0 4px 12px var(--theme-glow);
+  }
+
+  .warmwind-input {
+    @apply px-4 py-3 rounded-lg focus:outline-none transition-all duration-300 font-body;
+    border: 1px solid var(--theme-border);
+    background-color: var(--theme-accent);
+    color: var(--theme-primary);
+  }
+
+  .warmwind-input::placeholder {
+    color: var(--theme-muted);
+  }
+
+  .warmwind-input:focus {
+    background-color: var(--theme-hover);
+    border-color: var(--theme-hover);
+    box-shadow: 0 0 0 2px var(--theme-glow);
   }
 }
 
-@layer utilities {
-  .line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+/* Heavenly scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/30 rounded-full backdrop-blur-sm;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-white/40;
+}
+
+/* Heavenly animations */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
   }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes ethereal-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(255, 255, 255, 0.2);
+  }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.ethereal-glow {
+  animation: ethereal-glow 4s ease-in-out infinite;
+}
+
+/* Smooth dragging optimizations */
+.dragging {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+}
+
+/* Disable pointer events on window content during drag for better performance */
+.dragging .window-content {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Smooth transitions for window states */
+.window-transition {
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Loading screen optimizations */
+.loading-screen {
+  will-change: opacity;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  -moz-transform: translateZ(0);
+  -ms-transform: translateZ(0);
+  -o-transform: translateZ(0);
+}
+
+.loading-spinner {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.loading-progress {
+  will-change: width;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.loading-text {
+  will-change: opacity, transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+.floating-icon {
+  will-change: transform;
+  backface-visibility: hidden;
+  transform: translateZ(0);
+}
+
+/* Prevent layout shifts during loading */
+.loading-screen * {
+  box-sizing: border-box;
+}
+
+/* Optimize text rendering */
+.loading-screen p, .loading-screen h1 {
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Enhanced loading screen styles */
+.loading-screen {
+  background: linear-gradient(135deg,
+    rgba(0, 0, 0, 0.9) 0%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.loading-progress {
+  position: relative;
+  overflow: hidden;
+}
+
+.loading-progress::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(255, 255, 255, 0.4),
+    transparent);
+  animation: loading-shine 2s infinite;
+}
+
+.loading-text {
+  min-height: 1.2em;
+  line-height: 1.2;
+}
+
+.loading-spinner {
+  filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.3));
+}
+
+@keyframes loading-shine {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Completion animation */
+.loading-complete {
+  animation: complete-pulse 0.6s ease-out;
+}
+
+@keyframes complete-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Prevent drag conflicts */
+.desktop-area {
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+.widget-container {
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Ensure smooth dragging */
+.widget-container.dragging {
+  pointer-events: none;
+  user-select: none;
+}
+
+.widget-container.dragging * {
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Grid-based resize handles */
+.resize-handles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+}
+
+.resize-handle {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  z-index: 10;
+}
+
+.widget-container:hover .resize-handle {
+  opacity: 0.7;
+}
+
+.resize-handle:hover {
+  opacity: 1 !important;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+/* Corner handles */
+.resize-handle-nw,
+.resize-handle-ne,
+.resize-handle-sw,
+.resize-handle-se {
+  width: 12px;
+  height: 12px;
+}
+
+.resize-handle-nw {
+  top: -6px;
+  left: -6px;
+  cursor: nw-resize;
+}
+
+.resize-handle-ne {
+  top: -6px;
+  right: -6px;
+  cursor: ne-resize;
+}
+
+.resize-handle-sw {
+  bottom: -6px;
+  left: -6px;
+  cursor: sw-resize;
+}
+
+.resize-handle-se {
+  bottom: -6px;
+  right: -6px;
+  cursor: se-resize;
+}
+
+/* Edge handles */
+.resize-handle-n,
+.resize-handle-s {
+  left: 50%;
+  right: 50%;
+  height: 8px;
+  width: 20px;
+  margin-left: -10px;
+}
+
+.resize-handle-w,
+.resize-handle-e {
+  top: 50%;
+  bottom: 50%;
+  width: 8px;
+  height: 20px;
+  margin-top: -10px;
+}
+
+.resize-handle-n {
+  top: -4px;
+  cursor: n-resize;
+}
+
+.resize-handle-s {
+  bottom: -4px;
+  cursor: s-resize;
+}
+
+.resize-handle-w {
+  left: -4px;
+  cursor: w-resize;
+}
+
+.resize-handle-e {
+  right: -4px;
+  cursor: e-resize;
+}
+/* Window resize handles */
+.window-resize-handle {
+  position: absolute;
+  background: transparent;
+  z-index: 10;
+  pointer-events: auto;
+  opacity: 0;
+  transition: opacity 0.2s ease, background-color 0.2s ease;
+  border: 1px solid transparent;
+}
+
+/* Show resize handles on window hover */
+.fixed:hover .window-resize-handle {
+  opacity: 0.5;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.window-resize-handle:hover {
+  opacity: 0.9 !important;
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/* Edge handles */
+.window-resize-handle-right {
+  right: 0;
+  top: 0;
+  height: 100%;
+  cursor: e-resize;
+}
+
+.window-resize-handle-bottom {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  cursor: s-resize;
+}
+
+.window-resize-handle-left {
+  left: 0;
+  top: 0;
+  height: 100%;
+  cursor: w-resize;
+}
+
+.window-resize-handle-top {
+  top: 0;
+  left: 0;
+  width: 100%;
+  cursor: n-resize;
+}
+
+/* Corner handles - More prominent for diagonal resizing */
+.window-resize-handle-corner {
+  background: rgba(255, 255, 255, 0.4);
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(4px);
+  position: relative;
+  overflow: hidden;
+}
+
+.window-resize-handle-corner::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  right: 2px;
+  bottom: 2px;
+  background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.3) 40%, rgba(255, 255, 255, 0.3) 60%, transparent 60%);
+  pointer-events: none;
+}
+
+.window-resize-handle-corner:hover {
+  background: rgba(255, 255, 255, 0.6);
+  border-color: rgba(255, 255, 255, 0.8);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+  transform: scale(1.1);
+}
+
+.window-resize-handle-corner:hover::before {
+  background: linear-gradient(135deg, transparent 40%, rgba(255, 255, 255, 0.5) 40%, rgba(255, 255, 255, 0.5) 60%, transparent 60%);
+}
+
+.window-resize-handle-nw {
+  cursor: nw-resize;
+}
+
+.window-resize-handle-ne {
+  cursor: ne-resize;
+}
+
+.window-resize-handle-sw {
+  cursor: sw-resize;
+}
+
+.window-resize-handle-se {
+  cursor: se-resize;
+}
+
+/* Window resizing visual feedback */
+.fixed.resizing {
+  user-select: none;
+}
+
+.fixed.resizing .window-content {
+  pointer-events: none;
+}
+
+.fixed.resizing .window-resize-handle {
+  pointer-events: auto;
+}
+
+/* Grid visual feedback */
+.grid-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.15) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+/* Enhanced window container styles */
+.window-content {
+  overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.3) transparent;
+}
+
+.window-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.window-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.window-content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+}
+
+.window-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Improved window focus states */
+.fixed:focus-within {
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.1);
+}
+
+/* Better window transitions */
+.fixed {
+  transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+/* Container size indicators */
+.window-size-indicator {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: monospace;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.fixed:hover .window-size-indicator {
+  opacity: 0.7;
+}
+
+/* Responsive container improvements */
+@media (max-width: 768px) {
+  .fixed {
+    min-width: 320px !important;
+    min-height: 240px !important;
+  }
+  
+  .window-resize-handle {
+    width: 16px !important;
+    height: 16px !important;
+  }
+  
+  .window-resize-handle-corner {
+    width: 20px !important;
+    height: 20px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .fixed {
+    min-width: 280px !important;
+    min-height: 200px !important;
+  }
+  
+  .window-content {
+    padding: 12px !important;
+  }
+}
+
+/* Better container shadows and borders */
+.fixed {
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.15),
+    0 0 0 1px rgba(255, 255, 255, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.fixed:hover {
+  box-shadow: 
+    0 8px 30px rgba(0, 0, 0, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.15),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* Improved window header */
+.fixed .flex.items-center.justify-between {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.15) 0%, 
+    rgba(255, 255, 255, 0.08) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Better window content area */
+.window-content {
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.05) 0%, 
+    rgba(255, 255, 255, 0.02) 100%);
+}
+
+/* Profile Settings App specific styles */
+.profile-settings-app {
+  background: transparent;
+}
+
+.profile-settings-app .ethereal-card {
+  background: transparent;
+  border: none;
+  box-shadow: none;
+}
+
+/* Better form inputs in profile settings */
+.profile-settings-app input {
+  transition: all 0.2s ease;
+}
+
+.profile-settings-app input:focus {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+/* Better buttons in profile settings */
+.profile-settings-app button {
+  transition: all 0.2s ease;
+}
+
+.profile-settings-app button:hover {
+  transform: translateY(-1px);
+}
+
+.profile-settings-app button:active {
+  transform: translateY(0);
 }
