@@ -183,6 +183,9 @@ WORKDIR /bytebot/bytebotd
 
 # Make scripts executable
 RUN chmod +x /bytebot/bytebotd/scripts/*.sh
+
+# Set proper ownership for user files
+RUN chown -R user:user /home/user
 RUN npm install --build-from-source
 RUN npm rebuild uiohook-napi --build-from-source
 

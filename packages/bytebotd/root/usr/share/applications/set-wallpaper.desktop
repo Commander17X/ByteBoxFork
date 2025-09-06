@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Set ByteBot Wallpaper
+Comment=Set the default ByteBot wallpaper
+Exec=/bytebot/bytebotd/scripts/set-wallpaper.sh
+Icon=preferences-desktop-wallpaper
+Terminal=false
+Categories=System;Settings;
