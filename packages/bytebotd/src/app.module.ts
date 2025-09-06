@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { ComputerUseModule } from './computer-use/computer-use.module';
 import { InputTrackingModule } from './input-tracking/input-tracking.module';
+import { ModelManagementModule } from './model-management/model-management.module';
 import { ConfigModule } from '@nestjs/config';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { AppController } from './app.controller';
@@ -18,6 +19,7 @@ import { BytebotMcpModule } from './mcp';
     }),
     ComputerUseModule,
     InputTrackingModule,
+    ModelManagementModule,
     BytebotMcpModule,
   ],
   controllers: [AppController],

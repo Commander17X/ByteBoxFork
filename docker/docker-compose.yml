@@ -15,6 +15,7 @@ services:
     privileged: true
     ports:
       - "9990:9990" # bytebotd service & noVNC
+      - "11434:11434" # Ollama API
     environment:
       - DISPLAY=:0
     networks:
@@ -48,6 +49,7 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL:-postgresql://postgres:postgres@postgres:5432/bytebotdb}
       - BYTEBOT_DESKTOP_BASE_URL=${BYTEBOT_DESKTOP_BASE_URL:-http://bytebot-desktop:9990}
+      - OLLAMA_URL=${OLLAMA_URL:-http://bytebot-desktop:11434}
       - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
       - OPENAI_API_KEY=${OPENAI_API_KEY}
       - GEMINI_API_KEY=${GEMINI_API_KEY}

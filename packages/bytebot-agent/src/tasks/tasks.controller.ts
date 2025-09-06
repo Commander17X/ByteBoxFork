@@ -18,6 +18,7 @@ import { MessagesService } from '../messages/messages.service';
 import { ANTHROPIC_MODELS } from '../anthropic/anthropic.constants';
 import { OPENAI_MODELS } from '../openai/openai.constants';
 import { GOOGLE_MODELS } from '../google/google.constants';
+import { LocalService } from '../local/local.service';
 import { BytebotAgentModel } from 'src/agent/agent.types';
 
 const geminiApiKey = process.env.GEMINI_API_KEY;
@@ -37,6 +38,7 @@ export class TasksController {
   constructor(
     private readonly tasksService: TasksService,
     private readonly messagesService: MessagesService,
+    private readonly localService: LocalService,
   ) {}
 
   @Post()
@@ -107,7 +109,23 @@ export class TasksController {
         );
       }
     }
-    return models;
+
+    // Add local models if available
+    try {
+      const localModels = await this.localService.getAvailableModels();
+      const localBytebotModels: BytebotAgentModel[] = localModels.map(modelName => ({
+        provider: 'local',
+        name: modelName,
+        title: `Local: ${modelName}`,
+        contextWindow: 128000, // Default context window for local models
+      }));
+
+      return [...models, ...localBytebotModels];
+    } catch (error) {
+      // If local models fail to load, just return the regular models
+      console.warn('Failed to load local models:', error);
+      return models;
+    }
   }
 
   @Get(':id')

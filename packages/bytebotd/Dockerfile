@@ -141,6 +141,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
+# Install Ollama for local LLM support
+RUN curl -fsSL https://ollama.com/install.sh | sh
+
 # Upgrade pip
 RUN pip3 install --upgrade pip
 
@@ -177,6 +180,9 @@ RUN apt-get update && \
 COPY ./shared/ /bytebot/shared/
 COPY ./bytebotd/ /bytebot/bytebotd/
 WORKDIR /bytebot/bytebotd
+
+# Make scripts executable
+RUN chmod +x /bytebot/bytebotd/scripts/*.sh
 RUN npm install --build-from-source
 RUN npm rebuild uiohook-napi --build-from-source
 
