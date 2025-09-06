@@ -6,15 +6,13 @@
 
 <a href="https://trendshift.io/repositories/14624" target="_blank"><img src="https://trendshift.io/api/badge/repositories/14624" alt="bytebot-ai%2Fbytebot | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
 
-**An AI that has its own computer to complete tasks for you**
+**An AI that has its own computer to complete tasks for you - 100% Local & Private**
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/bytebot?referralCode=L9lKXQ)
-
-[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://github.com/bytebot-ai/bytebot/tree/main/docker)
+[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)](https://github.com/Commander17X/ByteBoxFork/tree/main/docker)
 [![License](https://img.shields.io/badge/license-Apache%202.0-green.svg)](LICENSE)
-[![Discord](https://img.shields.io/discord/1232768900274585720?color=7289da&label=discord)](https://discord.com/invite/d9ewZkWPTP)
+[![Local Only](https://img.shields.io/badge/LLM-Local%20Only-green.svg)](https://github.com/Commander17X/ByteBoxFork)
 
-[🌐 Website](https://bytebot.ai) • [📚 Documentation](https://docs.bytebot.ai) • [💬 Discord](https://discord.com/invite/d9ewZkWPTP) • [𝕏 Twitter](https://x.com/bytebot_ai)
+**🔒 Complete Privacy • 🚀 No API Costs • 🏠 Runs Locally**
 
 </div>
 
@@ -71,48 +69,43 @@ Bytebot isn't limited to web interfaces. It can:
 
 ## Quick Start
 
-### Deploy in 2 Minutes
+### Deploy in 2 Minutes - No API Keys Required!
 
-**Option 1: Railway (Easiest)**
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/bytebot?referralCode=L9lKXQ)
-
-Just click and add your AI provider API key.
-
-**Option 2: Docker Compose**
+**Docker Compose (Local Only)**
 
 ```bash
-git clone https://github.com/bytebot-ai/bytebot.git
-cd bytebot
+git clone https://github.com/Commander17X/ByteBoxFork.git
+cd ByteBoxFork
 
-# Add your AI provider key (choose one)
-echo "ANTHROPIC_API_KEY=sk-ant-..." > docker/.env
-# Or: echo "OPENAI_API_KEY=sk-..." > docker/.env
-# Or: echo "GEMINI_API_KEY=..." > docker/.env
-
+# No API keys needed - everything runs locally!
 docker-compose -f docker/docker-compose.yml up -d
 
 # Open http://localhost:9992
+# Go to Desktop tab → Local Models to install your first model
 ```
 
-[Full deployment guide →](https://docs.bytebot.ai/quickstart)
+**That's it!** ByteBot will automatically download a default model and you can install more through the web interface.
 
 ## How It Works
 
 Bytebot consists of four integrated components:
 
-1. **Virtual Desktop**: A complete Ubuntu Linux environment with pre-installed applications
-2. **AI Agent**: Understands your tasks and controls the desktop to complete them
+1. **Virtual Desktop**: A complete Ubuntu Linux environment with Ollama and pre-installed applications
+2. **Local AI Agent**: Uses local LLMs (via Ollama) to understand tasks and control the desktop
 3. **Task Interface**: Web UI where you create tasks and watch Bytebot work
 4. **APIs**: REST endpoints for programmatic task creation and desktop control
 
 ### Key Features
 
+- **100% Local & Private**: No data leaves your infrastructure
+- **No API Costs**: Use your own hardware, no per-token charges
 - **Natural Language Tasks**: Just describe what you need done
 - **File Uploads**: Drop files onto tasks for Bytebot to process
 - **Live Desktop View**: Watch Bytebot work in real-time
 - **Takeover Mode**: Take control when you need to help or configure something
 - **Password Manager Support**: Install 1Password, Bitwarden, etc. for automatic authentication
 - **Persistent Environment**: Install programs and they stay available for future tasks
+- **Local Model Management**: Install, manage, and switch between different LLMs
 
 ## Example Tasks
 
@@ -222,29 +215,28 @@ Create tasks in natural language and watch Bytebot complete them using the confi
 
 Bytebot is built with:
 
-- **Desktop**: Ubuntu 22.04 with XFCE, Firefox, VS Code, and other tools
-- **Agent**: NestJS service that coordinates AI and desktop actions
-- **UI**: Next.js application for task management
-- **AI Support**: Works with Anthropic Claude, OpenAI GPT, Google Gemini
+- **Desktop**: Ubuntu 22.04 with XFCE, Firefox, VS Code, Ollama, and other tools
+- **Agent**: NestJS service that coordinates local AI and desktop actions
+- **UI**: Next.js application for task management and model management
+- **AI Support**: Local LLMs via Ollama (llama3.2, qwen2.5, phi3, and more)
 - **Deployment**: Docker containers for easy self-hosting
 
 ## Why Self-Host?
 
-- **Data Privacy**: Everything runs on your infrastructure
-- **Full Control**: Customize the desktop environment as needed
-- **No Limits**: Use your own AI API keys without platform restrictions
-- **Flexibility**: Install any software, access any systems
+- **Complete Privacy**: Everything runs on your infrastructure, no external API calls
+- **No API Costs**: Use your own hardware, no per-token charges
+- **Full Control**: Customize the desktop environment and models as needed
+- **Offline Capability**: Works without internet connection
+- **Flexibility**: Install any software, access any systems, use any LLM model
 
 ## Advanced Features
 
-### Multiple AI Providers
+### Local Model Management
 
-Use any AI provider through our [LiteLLM integration](https://docs.bytebot.ai/deployment/litellm):
-
-- Azure OpenAI
-- AWS Bedrock
-- Local models via Ollama
-- 100+ other providers
+- **Model Installation**: Install any Ollama-compatible model through the web UI
+- **Model Switching**: Switch between different models for different tasks
+- **Resource Management**: Monitor model usage and performance
+- **Custom Models**: Use your own fine-tuned models
 
 ### Enterprise Deployment
 
@@ -252,21 +244,19 @@ Deploy on Kubernetes with Helm:
 
 ```bash
 # Clone the repository
-git clone https://github.com/bytebot-ai/bytebot.git
-cd bytebot
+git clone https://github.com/Commander17X/ByteBoxFork.git
+cd ByteBoxFork
 
-# Install with Helm
-helm install bytebot ./helm \
-  --set agent.env.ANTHROPIC_API_KEY=sk-ant-...
+# Install with Helm (no API keys needed!)
+helm install bytebot ./helm
 ```
 
 [Enterprise deployment guide →](https://docs.bytebot.ai/deployment/helm)
 
 ## Community & Support
 
-- **Discord**: [Join our community](https://discord.com/invite/d9ewZkWPTP) for help and discussions
-- **Documentation**: Comprehensive guides at [docs.bytebot.ai](https://docs.bytebot.ai)
 - **GitHub Issues**: Report bugs and request features
+- **Documentation**: See `LOCAL_LLM_SETUP.md` for detailed setup guide
 
 ## Contributing
 
@@ -279,10 +269,9 @@ We welcome contributions! Whether it's:
 
 Please:
 
-1. Check existing [issues](https://github.com/bytebot-ai/bytebot/issues) first
+1. Check existing [issues](https://github.com/Commander17X/ByteBoxFork/issues) first
 2. Open an issue to discuss major changes
 3. Submit PRs with clear descriptions
-4. Join our [Discord](https://discord.com/invite/d9ewZkWPTP) to discuss ideas
 
 ## License
 
@@ -292,10 +281,14 @@ Bytebot is open source under the Apache 2.0 license.
 
 <div align="center">
 
-**Give your AI its own computer. See what it can do.**
+**Give your AI its own computer. See what it can do - 100% locally and privately.**
 
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/deploy/bytebot?referralCode=L9lKXQ)
+```bash
+git clone https://github.com/Commander17X/ByteBoxFork.git
+cd ByteBoxFork
+docker-compose -f docker/docker-compose.yml up -d
+```
 
-<sub>Built by [Tantl Labs](https://tantl.com) and the open source community</sub>
+<sub>Forked from [ByteBot](https://github.com/bytebot-ai/bytebot) with local LLM integration</sub>
 
 </div>

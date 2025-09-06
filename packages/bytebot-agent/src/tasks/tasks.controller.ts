@@ -15,23 +15,8 @@ import { CreateTaskDto } from './dto/create-task.dto';
 import { Message, Task } from '@prisma/client';
 import { AddTaskMessageDto } from './dto/add-task-message.dto';
 import { MessagesService } from '../messages/messages.service';
-import { ANTHROPIC_MODELS } from '../anthropic/anthropic.constants';
-import { OPENAI_MODELS } from '../openai/openai.constants';
-import { GOOGLE_MODELS } from '../google/google.constants';
 import { LocalService } from '../local/local.service';
 import { BytebotAgentModel } from 'src/agent/agent.types';
-
-const geminiApiKey = process.env.GEMINI_API_KEY;
-const anthropicApiKey = process.env.ANTHROPIC_API_KEY;
-const openaiApiKey = process.env.OPENAI_API_KEY;
-
-const proxyUrl = process.env.BYTEBOT_LLM_PROXY_URL;
-
-const models = [
-  ...(anthropicApiKey ? ANTHROPIC_MODELS : []),
-  ...(openaiApiKey ? OPENAI_MODELS : []),
-  ...(geminiApiKey ? GOOGLE_MODELS : []),
-];
 
 @Controller('tasks')
 export class TasksController {
@@ -70,47 +55,7 @@ export class TasksController {
 
   @Get('models')
   async getModels() {
-    if (proxyUrl) {
-      try {
-        const response = await fetch(`${proxyUrl}/model/info`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new HttpException(
-            `Failed to fetch models from proxy: ${response.statusText}`,
-            HttpStatus.BAD_GATEWAY,
-          );
-        }
-
-        const proxyModels = await response.json();
-
-        // Map proxy response to BytebotAgentModel format
-        const models: BytebotAgentModel[] = proxyModels.data.map(
-          (model: any) => ({
-            provider: 'proxy',
-            name: model.litellm_params.model,
-            title: model.model_name,
-            contextWindow: 128000,
-          }),
-        );
-
-        return models;
-      } catch (error) {
-        if (error instanceof HttpException) {
-          throw error;
-        }
-        throw new HttpException(
-          `Error fetching models: ${error.message}`,
-          HttpStatus.INTERNAL_SERVER_ERROR,
-        );
-      }
-    }
-
-    // Add local models if available
+    // Get local models only
     try {
       const localModels = await this.localService.getAvailableModels();
       const localBytebotModels: BytebotAgentModel[] = localModels.map(modelName => ({
@@ -120,11 +65,10 @@ export class TasksController {
         contextWindow: 128000, // Default context window for local models
       }));
 
-      return [...models, ...localBytebotModels];
+      return localBytebotModels;
     } catch (error) {
-      // If local models fail to load, just return the regular models
       console.warn('Failed to load local models:', error);
-      return models;
+      return [];
     }
   }
 

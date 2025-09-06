@@ -9,7 +9,6 @@ import {
   TaskStatus,
   TaskType,
 } from '@prisma/client';
-import { AnthropicService } from '../anthropic/anthropic.service';
 import {
   isComputerToolUseContentBlock,
   isSetTaskStatusToolUseBlock,
@@ -25,8 +24,6 @@ import {
 } from '@bytebot/shared';
 import { InputCaptureService } from './input-capture.service';
 import { OnEvent } from '@nestjs/event-emitter';
-import { OpenAIService } from '../openai/openai.service';
-import { GoogleService } from '../google/google.service';
 import { LocalService } from '../local/local.service';
 import {
   BytebotAgentModel,
@@ -39,7 +36,6 @@ import {
 } from './agent.constants';
 import { SummariesService } from '../summaries/summaries.service';
 import { handleComputerToolUse } from './agent.computer-use';
-import { ProxyService } from '../proxy/proxy.service';
 
 @Injectable()
 export class AgentProcessor {
@@ -53,19 +49,11 @@ export class AgentProcessor {
     private readonly tasksService: TasksService,
     private readonly messagesService: MessagesService,
     private readonly summariesService: SummariesService,
-    private readonly anthropicService: AnthropicService,
-    private readonly openaiService: OpenAIService,
-    private readonly googleService: GoogleService,
     private readonly localService: LocalService,
-    private readonly proxyService: ProxyService,
     private readonly inputCaptureService: InputCaptureService,
   ) {
     this.services = {
-      anthropic: this.anthropicService,
-      openai: this.openaiService,
-      google: this.googleService,
       local: this.localService,
-      proxy: this.proxyService,
     };
     this.logger.log('AgentProcessor initialized');
   }

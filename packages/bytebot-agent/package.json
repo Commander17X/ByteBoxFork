@@ -22,9 +22,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.39.0",
     "@bytebot/shared": "../shared",
-    "@google/genai": "^1.8.0",
     "@nestjs/common": "^11.0.1",
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
@@ -37,7 +35,6 @@
     "@thallesp/nestjs-better-auth": "^1.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
-    "openai": "^5.8.2",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "socket.io": "^4.8.1",
@@ -87,11 +84,6 @@
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node"
-  },
-  "overrides": {
-    "openai": {
-      "zod": "^4.0.5"
-    }
   },
   "engines": {
     "node": "20"
