@@ -1,294 +1,142 @@
-"use client";
+'use client'
 
-import React, { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Loader2, Download, Trash2, RefreshCw, CheckCircle, XCircle } from "lucide-react";
-
-interface Model {
-  name: string;
-  size?: number;
-  modified_at?: string;
-}
+import React, { useState, useEffect } from 'react'
+import { motion } from 'framer-motion'
+import { Download, Trash2, Play, Pause, Settings } from 'lucide-react'
+import { Model } from '@/types'
+import { Button } from '@/components/ui/button'
 
 interface ModelManagementProps {
-  className?: string;
+  className?: string
 }
 
-const POPULAR_MODELS = [
-  { name: "llama3.2:3b", description: "Small, fast model (3B parameters)" },
-  { name: "llama3.2:1b", description: "Very small, very fast model (1B parameters)" },
-  { name: "llama3.1:8b", description: "Medium model (8B parameters)" },
-  { name: "qwen2.5:3b", description: "Alternative small model (3B parameters)" },
-  { name: "phi3:mini", description: "Microsoft's small model (3.8B parameters)" },
-  { name: "llama3.2:70b", description: "Large model (70B parameters) - requires significant resources" },
-];
-
-export function ModelManagement({ className }: ModelManagementProps) {
-  const [models, setModels] = useState<Model[]>([]);
-  const [loading, setLoading] = useState(false);
-  const [pulling, setPulling] = useState<string | null>(null);
-  const [deleting, setDeleting] = useState<string | null>(null);
-  const [customModel, setCustomModel] = useState("");
-  const [ollamaStatus, setOllamaStatus] = useState<boolean | null>(null);
+export function ModelManagement({ className = '' }: ModelManagementProps) {
+  const [models, setModels] = useState<Model[]>([])
+  const [loading, setLoading] = useState(true)
+  const [installing, setInstalling] = useState<string | null>(null)
 
   useEffect(() => {
-    fetchModels();
-    checkOllamaStatus();
-  }, []);
-
-  const checkOllamaStatus = async () => {
-    try {
-      const response = await fetch("http://localhost:11434/api/tags");
-      setOllamaStatus(response.ok);
-    } catch (error) {
-      setOllamaStatus(false);
-    }
-  };
+    fetchModels()
+  }, [])
 
   const fetchModels = async () => {
-    setLoading(true);
     try {
-      const response = await fetch("http://localhost:11434/api/tags");
+      const response = await fetch('/api/tasks/models')
       if (response.ok) {
-        const data = await response.json();
-        setModels(data.models || []);
+        const data = await response.json()
+        setModels(data)
       }
     } catch (error) {
-      console.error("Failed to fetch models:", error);
+      console.error('Failed to fetch models:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
-  const pullModel = async (modelName: string) => {
-    setPulling(modelName);
+  const installModel = async (modelName: string) => {
+    setInstalling(modelName)
     try {
-      const response = await fetch("http://localhost:11434/api/pull", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: modelName }),
-      });
-
-      if (response.ok) {
-        // Stream the response to show progress
-        const reader = response.body?.getReader();
-        if (reader) {
-          const decoder = new TextDecoder();
-          let done = false;
-
-          while (!done) {
-            const { value, done: readerDone } = await reader.read();
-            done = readerDone;
-
-            if (value) {
-              const chunk = decoder.decode(value);
-              const lines = chunk.split('\n');
-              
-              for (const line of lines) {
-                if (line.trim()) {
-                  try {
-                    const data = JSON.parse(line);
-                    if (data.status) {
-                      console.log(`Model pull status: ${data.status}`);
-                    }
-                  } catch (e) {
-                    // Ignore non-JSON lines
-                  }
-                }
-              }
-            }
-          }
-        }
-        await fetchModels();
-      } else {
-        console.error("Failed to pull model");
-      }
+      // This would typically call an API to install the model
+      console.log('Installing model:', modelName)
+      // Simulate installation
+      await new Promise(resolve => setTimeout(resolve, 2000))
+      await fetchModels() // Refresh the list
     } catch (error) {
-      console.error("Error pulling model:", error);
+      console.error('Failed to install model:', error)
     } finally {
-      setPulling(null);
+      setInstalling(null)
     }
-  };
+  }
 
-  const deleteModel = async (modelName: string) => {
-    setDeleting(modelName);
+  const removeModel = async (modelName: string) => {
     try {
-      const response = await fetch(`http://localhost:11434/api/delete`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ name: modelName }),
-      });
-
-      if (response.ok) {
-        await fetchModels();
-      } else {
-        console.error("Failed to delete model");
-      }
+      // This would typically call an API to remove the model
+      console.log('Removing model:', modelName)
+      await fetchModels() // Refresh the list
     } catch (error) {
-      console.error("Error deleting model:", error);
-    } finally {
-      setDeleting(null);
+      console.error('Failed to remove model:', error)
     }
-  };
+  }
 
-  const formatFileSize = (bytes: number) => {
-    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
-    if (bytes === 0) return '0 Bytes';
-    const i = Math.floor(Math.log(bytes) / Math.log(1024));
-    return Math.round(bytes / Math.pow(1024, i) * 100) / 100 + ' ' + sizes[i];
-  };
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString();
-  };
+  if (loading) {
+    return (
+      <div className={`p-6 ${className}`}>
+        <div className="animate-pulse space-y-4">
+          <div className="h-6 bg-white/20 rounded w-1/3"></div>
+          <div className="space-y-3">
+            {[...Array(3)].map((_, i) => (
+              <div key={i} className="h-16 bg-white/10 rounded-lg"></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className={className}>
-      <Card>
-        <CardHeader>
-          <div className="flex items-center justify-between">
-            <div>
-              <CardTitle>Local LLM Models</CardTitle>
-              <CardDescription>
-                Manage local language models running on Ollama
-              </CardDescription>
-            </div>
-            <div className="flex items-center gap-2">
-              <Badge variant={ollamaStatus ? "default" : "destructive"}>
-                {ollamaStatus ? (
-                  <><CheckCircle className="w-3 h-3 mr-1" /> Ollama Running</>
-                ) : (
-                  <><XCircle className="w-3 h-3 mr-1" /> Ollama Offline</>
-                )}
-              </Badge>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={fetchModels}
-                disabled={loading}
-              >
-                <RefreshCw className={`w-4 h-4 mr-2 ${loading ? "animate-spin" : ""}`} />
-                Refresh
-              </Button>
-            </div>
+    <div className={`p-6 ${className}`}>
+      <div className="mb-6">
+        <h2 className="text-2xl font-bold text-white mb-2">Model Management</h2>
+        <p className="text-white/60">Install and manage AI models for ByteBot</p>
+      </div>
+
+      <div className="space-y-4">
+        {models.length === 0 ? (
+          <div className="text-center py-12">
+            <Settings className="w-12 h-12 text-white/40 mx-auto mb-4" />
+            <p className="text-white/60 mb-2">No models installed</p>
+            <p className="text-sm text-white/40">Install your first model to get started</p>
           </div>
-        </CardHeader>
-        <CardContent className="space-y-6">
-          {/* Install Popular Models */}
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Install Popular Models</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {POPULAR_MODELS.map((model) => (
-                <div
-                  key={model.name}
-                  className="flex items-center justify-between p-3 border rounded-lg"
-                >
-                  <div>
-                    <div className="font-medium">{model.name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {model.description}
-                    </div>
-                  </div>
+        ) : (
+          models.map((model) => (
+            <motion.div
+              key={model.name}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="p-4 bg-white/5 rounded-lg border border-white/10 hover:bg-white/10 transition-colors"
+            >
+              <div className="flex items-center justify-between">
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white mb-1">
+                    {model.title}
+                  </h3>
+                  <p className="text-sm text-white/60 mb-2">
+                    {model.provider} • {model.name}
+                  </p>
+                  {model.contextWindow && (
+                    <p className="text-xs text-white/40">
+                      Context: {model.contextWindow.toLocaleString()} tokens
+                    </p>
+                  )}
+                </div>
+                
+                <div className="flex items-center space-x-2">
                   <Button
+                    variant="outline"
                     size="sm"
-                    onClick={() => pullModel(model.name)}
-                    disabled={pulling === model.name || models.some(m => m.name === model.name)}
+                    onClick={() => installModel(model.name)}
+                    disabled={installing === model.name}
                   >
-                    {pulling === model.name ? (
-                      <Loader2 className="w-4 h-4 animate-spin" />
-                    ) : models.some(m => m.name === model.name) ? (
-                      <CheckCircle className="w-4 h-4" />
+                    {installing === model.name ? (
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
                     ) : (
                       <Download className="w-4 h-4" />
                     )}
                   </Button>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Custom Model Installation */}
-          <div>
-            <h3 className="text-lg font-semibold mb-3">Install Custom Model</h3>
-            <div className="flex gap-2">
-              <Input
-                placeholder="Enter model name (e.g., llama3.2:latest)"
-                value={customModel}
-                onChange={(e) => setCustomModel(e.target.value)}
-                className="flex-1"
-              />
-              <Button
-                onClick={() => {
-                  if (customModel.trim()) {
-                    pullModel(customModel.trim());
-                    setCustomModel("");
-                  }
-                }}
-                disabled={!customModel.trim() || pulling !== null}
-              >
-                {pulling === customModel ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <Download className="w-4 h-4" />
-                )}
-              </Button>
-            </div>
-          </div>
-
-          {/* Installed Models */}
-          <div>
-            <h3 className="text-lg font-semibold mb-3">
-              Installed Models ({models.length})
-            </h3>
-            {loading ? (
-              <div className="flex items-center justify-center py-8">
-                <Loader2 className="w-6 h-6 animate-spin" />
-              </div>
-            ) : models.length === 0 ? (
-              <div className="text-center py-8 text-muted-foreground">
-                No models installed. Install a model above to get started.
-              </div>
-            ) : (
-              <div className="space-y-2">
-                {models.map((model) => (
-                  <div
-                    key={model.name}
-                    className="flex items-center justify-between p-3 border rounded-lg"
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => removeModel(model.name)}
                   >
-                    <div className="flex-1">
-                      <div className="font-medium">{model.name}</div>
-                      <div className="text-sm text-muted-foreground">
-                        {model.size && `Size: ${formatFileSize(model.size)}`}
-                        {model.modified_at && ` • Modified: ${formatDate(model.modified_at)}`}
-                      </div>
-                    </div>
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      onClick={() => deleteModel(model.name)}
-                      disabled={deleting === model.name}
-                    >
-                      {deleting === model.name ? (
-                        <Loader2 className="w-4 h-4 animate-spin" />
-                      ) : (
-                        <Trash2 className="w-4 h-4" />
-                      )}
-                    </Button>
-                  </div>
-                ))}
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </div>
               </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+            </motion.div>
+          ))
+        )}
+      </div>
     </div>
-  );
+  )
 }

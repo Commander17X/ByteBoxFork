@@ -1,0 +1,200 @@
+/* Vision Agent - Lightweight CSS for optimal performance */
+
+.vision-agent-container {
+  /* Optimize for GPU acceleration */
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+.vision-message {
+  /* Smooth animations with hardware acceleration */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+.vision-input {
+  /* Optimize input rendering */
+  contain: layout style paint;
+  will-change: transform;
+}
+
+.vision-scroll {
+  /* Smooth scrolling with momentum */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for better UX */
+.vision-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+
+.vision-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.vision-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+}
+
+.vision-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Glassmorphic effects with better performance */
+.vision-glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.vision-glass-strong {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Optimized animations */
+@keyframes vision-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+@keyframes vision-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px) translateZ(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) translateZ(0);
+  }
+}
+
+.vision-animate-in {
+  animation: vision-fade-in 0.3s ease-out;
+}
+
+.vision-animate-slide {
+  animation: vision-slide-up 0.4s ease-out;
+}
+
+/* Loading states */
+.vision-loading {
+  position: relative;
+  overflow: hidden;
+}
+
+.vision-loading::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  animation: vision-shimmer 1.5s infinite;
+}
+
+@keyframes vision-shimmer {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 100%;
+  }
+}
+
+/* Responsive design optimizations */
+@media (max-width: 768px) {
+  .vision-mobile-optimized {
+    padding: 0.75rem;
+    font-size: 0.875rem;
+  }
+  
+  .vision-mobile-input {
+    padding: 0.75rem;
+    font-size: 1rem; /* Prevent zoom on iOS */
+  }
+}
+
+/* Dark mode optimizations */
+@media (prefers-color-scheme: dark) {
+  .vision-glass {
+    background: rgba(0, 0, 0, 0.2);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .vision-glass-strong {
+    background: rgba(0, 0, 0, 0.3);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+/* Performance optimizations */
+.vision-optimized {
+  /* Reduce repaints */
+  contain: layout style paint;
+  
+  /* Optimize for animations */
+  transform: translateZ(0);
+  will-change: transform;
+  
+  /* Reduce memory usage */
+  backface-visibility: hidden;
+}
+
+/* Focus states for accessibility */
+.vision-focus:focus {
+  outline: 2px solid rgba(59, 130, 246, 0.5);
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .vision-glass {
+    background: rgba(255, 255, 255, 0.9);
+    color: #000;
+    border: 2px solid #000;
+  }
+  
+  .vision-glass-strong {
+    background: rgba(255, 255, 255, 0.95);
+    color: #000;
+    border: 2px solid #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .vision-animate-in,
+  .vision-animate-slide {
+    animation: none;
+  }
+  
+  .vision-loading::after {
+    animation: none;
+  }
+  
+  .vision-scroll {
+    scroll-behavior: auto;
+  }
+}

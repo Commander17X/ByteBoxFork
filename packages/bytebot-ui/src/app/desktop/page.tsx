@@ -1,61 +1,42 @@
-"use client";
+'use client'
 
-import React, { useState } from "react";
-import { Header } from "@/components/layout/Header";
-import { DesktopContainer } from "@/components/ui/desktop-container";
-import { ModelManagement } from "@/components/models/ModelManagement";
-import { Button } from "@/components/ui/button";
-import { Monitor, Cpu } from "lucide-react";
+import React from 'react'
+import { Header } from '@/components/layout/header'
+import { DesktopContainer } from '@/components/ui/desktop-container'
+import { ModelManagement } from '@/components/models/ModelManagement'
+import { Button } from '@/components/ui/button'
+import { BlankDesktop } from '@/components/os/blank-desktop'
+
+export const dynamic = 'force-dynamic'
 
 export default function DesktopPage() {
-  const [activeTab, setActiveTab] = useState<"desktop" | "models">("desktop");
-
   return (
-    <div className="flex h-screen flex-col overflow-hidden">
+    <DesktopContainer>
       <Header />
-
-      <main className="m-2 flex-1 overflow-hidden px-2 py-4">
-        <div className="flex h-full gap-4">
-          {/* Sidebar */}
-          <div className="w-64 flex-shrink-0">
-            <div className="space-y-2">
-              <Button
-                variant={activeTab === "desktop" ? "default" : "outline"}
-                className="w-full justify-start"
-                onClick={() => setActiveTab("desktop")}
-              >
-                <Monitor className="w-4 h-4 mr-2" />
-                Desktop View
-              </Button>
-              <Button
-                variant={activeTab === "models" ? "default" : "outline"}
-                className="w-full justify-start"
-                onClick={() => setActiveTab("models")}
-              >
-                <Cpu className="w-4 h-4 mr-2" />
-                Local Models
-              </Button>
-            </div>
-          </div>
-
-          {/* Main content */}
-          <div className="flex-1 overflow-hidden">
-            {activeTab === "desktop" ? (
-              <div className="flex h-full items-center justify-center">
-                <div className="w-full max-w-4xl">
-                  <DesktopContainer viewOnly={false} status="live_view">
-                    {/* No action buttons for desktop page */}
-                  </DesktopContainer>
-                </div>
-              </div>
-            ) : (
-              <div className="h-full overflow-y-auto">
-                <ModelManagement />
-              </div>
-            )}
+      <div className="flex-1 flex">
+        {/* Sidebar */}
+        <div className="w-64 bg-white/5 border-r border-white/10 p-4">
+          <div className="space-y-4">
+            <Button variant="outline" className="w-full justify-start">
+              <span>Desktop</span>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start">
+              <span>Models</span>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start">
+              <span>Tasks</span>
+            </Button>
+            <Button variant="ghost" className="w-full justify-start">
+              <span>Settings</span>
+            </Button>
           </div>
         </div>
-      </main>
-    </div>
-  );
+        
+        {/* Main Content */}
+        <div className="flex-1">
+          <BlankDesktop />
+        </div>
+      </div>
+    </DesktopContainer>
+  )
 }

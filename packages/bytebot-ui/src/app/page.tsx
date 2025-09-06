@@ -1,8 +1,8 @@
-"use client";
+'use client'
 
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Header } from "@/components/layout/Header";
+import { Header } from "@/components/layout/header";
 import { ChatInput } from "@/components/messages/ChatInput";
 import { useRouter } from "next/navigation";
 import {

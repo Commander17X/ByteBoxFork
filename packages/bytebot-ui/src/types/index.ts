@@ -1,67 +1,33 @@
-import { MessageContentBlock } from "@bytebot/shared";
-
-export enum Role {
-  USER = "USER",
-  ASSISTANT = "ASSISTANT",
-}
-
-// Message interface
-export interface Message {
-  id: string;
-  content: MessageContentBlock[];
-  role: Role;
-  taskId?: string;
-  createdAt?: string;
-  take_over?: boolean;
-}
-
-// Grouped messages interface for processed endpoint
-export interface GroupedMessages {
-  role: Role;
-  messages: Message[];
-  take_over?: boolean;
-}
-
 export interface Model {
   provider: string;
   name: string;
   title: string;
+  contextWindow?: number;
 }
 
-// Task related enums and types
-export enum TaskStatus {
-  PENDING = "PENDING",
-  RUNNING = "RUNNING",
-  NEEDS_HELP = "NEEDS_HELP",
-  NEEDS_REVIEW = "NEEDS_REVIEW",
-  COMPLETED = "COMPLETED",
-  CANCELLED = "CANCELLED",
-  FAILED = "FAILED",
-}
-
-export enum TaskPriority {
-  LOW = "LOW",
-  MEDIUM = "MEDIUM",
-  HIGH = "HIGH",
-  URGENT = "URGENT",
-}
-
-export enum TaskType {
-  IMMEDIATE = "IMMEDIATE",
-  SCHEDULED = "SCHEDULED",
-}
-
-export interface User {
+export interface Task {
   id: string;
-  name?: string;
-  email: string;
+  description: string;
+  status: 'PENDING' | 'RUNNING' | 'NEEDS_HELP' | 'NEEDS_REVIEW' | 'COMPLETED' | 'CANCELLED' | 'FAILED';
+  priority: 'LOW' | 'MEDIUM' | 'HIGH' | 'URGENT';
+  createdAt: string;
+  updatedAt: string;
+  executedAt?: string;
+  completedAt?: string;
+  error?: string;
+  result?: any;
+  model: Model;
+  messages?: Message[];
+  files?: File[];
 }
 
-export interface FileWithBase64 {
-  name: string;
-  base64: string;
-  type: string;
-  size: number;
+export interface Message {
+  id: string;
+  content: any;
+  role: 'USER' | 'ASSISTANT';
+  createdAt: string;
+  updatedAt: string;
+  taskId: string;
 }
 
 export interface File {
@@ -73,25 +39,4 @@ export interface File {
   createdAt: string;
   updatedAt: string;
   taskId: string;
-}
-
-export interface Task {
-  id: string;
-  description: string;
-  type: TaskType;
-  status: TaskStatus;
-  priority: TaskPriority;
-  control: Role;
-  createdBy: Role;
-  createdAt: string;
-  updatedAt: string;
-  scheduledFor?: string;
-  executedAt?: string;
-  completedAt?: string;
-  queuedAt?: string;
-  error?: string;
-  result?: unknown;
-  model: Model;
-  user?: User;
-  files?: File[];
 }
