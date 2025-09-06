@@ -1,8 +1,8 @@
 'use client'
 
 import React from 'react'
-import { Header } from '@/components/layout/header'
-import { DesktopContainer } from '@/components/ui/desktop-container'
+import Header from '@/components/layout/header'
+import DesktopContainer from '@/components/ui/desktop-container'
 import { ModelManagement } from '@/components/models/ModelManagement'
 import { Button } from '@/components/ui/button'
 import { BlankDesktop } from '@/components/os/blank-desktop'
